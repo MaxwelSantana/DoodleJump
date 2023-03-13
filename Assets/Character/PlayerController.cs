@@ -41,11 +41,31 @@ public class PlayerController : MonoBehaviour
 
     private bool isFalling;
 
+    public GameObject Player;
+
+    public Text PointText;
+
+    public Text HighscoreText;
+
+    public float peakPlayerPosition;
+
+    int points;
+
+    int highscore;
+
     void Start()
     {
         sr = this.GetComponent<SpriteRenderer>();
         rb2d = GetComponent<Rigidbody2D>();
         Jump();
+
+        //This value grabs the saved integer and sets it to the value of highscore when player runs the game !!!FOR THE PERSON WHO IS WORKING ON THE MENU!!! This is the stored highscore use this variable when showing the highscore on the menu.
+        highscore = PlayerPrefs.GetInt("highScore", 0);
+        //Sets the PointsText to the converted points integer
+        PointText.text = "Points: " + points.ToString();
+        //Sets the HighscoreText to the converted highscore integer
+        HighscoreText.text = "Highscore: " + highscore.ToString();
+        peakPlayerPosition = 0;
     }
 
     void Update()
@@ -54,7 +74,7 @@ public class PlayerController : MonoBehaviour
         playerCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
         
         playerCamera.transform.position = new Vector3(this.transform.position.x,
-           this.transform.position.y, playerCamera.transform.position.z);
+        this.transform.position.y, playerCamera.transform.position.z);
         
         float horizontalInput = Input.GetAxis("Horizontal");
 
@@ -67,6 +87,22 @@ public class PlayerController : MonoBehaviour
         if (isJumping)
         {
             sr.sprite = _jumpSprites[1];
+            
+            //When peakPlayerPosition is not less than Player's Y Value it will set a new peakPlayerPosition. The player will go reach a height, if the player falls below that height the condition will not be met. Therefore it will not add points. Only when the player reaches above the peakPlayerPosition will it add points.
+            if(peakPlayerPosition ! < Player.transform.position.y)
+            {
+            peakPlayerPosition = transform.position.y;  
+                points += 1;
+                PointText.text = "Points: " + points.ToString();
+            }
+
+            //This will set & save a new highscore if the current highscore is less than points
+            if(highscore < points)
+                {   
+                    //PlayerPrefs will save the value points into the value to "highScore"
+                    PlayerPrefs.SetInt("highScore", points);
+                }
+
         }
 
         if (isFalling)
@@ -76,6 +112,12 @@ public class PlayerController : MonoBehaviour
 
         delay += Time.deltaTime;
         lastY = transform.position.y;
+
+        //This is just for testing purpose or maybe even a potential highscore reset button?
+        if (Input.GetKeyDown("backspace"))
+        {
+            PlayerPrefs.SetInt("highScore", 0);
+        }
     }
 
     private void UpdateJumpControls()
