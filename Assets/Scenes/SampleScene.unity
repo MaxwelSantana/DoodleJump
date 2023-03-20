@@ -1314,7 +1314,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 426, y: 251.5}
+  m_AnchoredPosition: {x: 471, y: 242}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &698280993
@@ -2262,7 +2262,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 426, y: -251.65}
+  m_AnchoredPosition: {x: 471, y: -242.15}
   m_SizeDelta: {x: 160, y: 29.6917}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1247222597
@@ -2826,7 +2826,8 @@ MonoBehaviour:
   - {fileID: -5761754228987130096, guid: eff3f119b68ec9c449d41b235a454438, type: 3}
   - {fileID: 5907920678353447086, guid: eff3f119b68ec9c449d41b235a454438, type: 3}
   - {fileID: -6086044393419928071, guid: eff3f119b68ec9c449d41b235a454438, type: 3}
-  _currentAnimation: []
+  leftJump: {fileID: 1004894418, guid: 8b33de7be3d167242af55ec4cb251bdb, type: 3}
+  rightJump: {fileID: 5907920678353447086, guid: 10f3cacccb0c4c547be76836eba20664, type: 3}
   FramesPerSecond: 20
   Player: {fileID: 1664606253}
   PointText: {fileID: 698280993}

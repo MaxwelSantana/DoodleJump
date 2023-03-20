@@ -19,7 +19,10 @@ public class PlayerController : MonoBehaviour
     private Sprite[] _jumpSprites;
 
     [SerializeField]
-    private Sprite[] _currentAnimation;
+    private Sprite leftJump;
+
+    [SerializeField]
+    private Sprite rightJump;
 
     SpriteRenderer sr;
 
@@ -53,6 +56,8 @@ public class PlayerController : MonoBehaviour
 
     int highscore;
 
+    bool facingRight = true;
+
     void Start()
     {
         sr = this.GetComponent<SpriteRenderer>();
@@ -78,30 +83,39 @@ public class PlayerController : MonoBehaviour
         
         float horizontalInput = Input.GetAxis("Horizontal");
 
+        Sprite jumpSprite = null;
+
         if (horizontalInput != 0)
         {
             characterState = 1;
             transform.Translate(new Vector3(speed * horizontalInput, 0f, 0f));
         }
 
+        if (horizontalInput > 0 && !facingRight)
+        {
+            Flip();
+        } else if (horizontalInput < 0 && facingRight) {
+            Flip();
+        }
+
         if (isJumping)
         {
-            sr.sprite = _jumpSprites[1];
-            
+            sr.sprite = rightJump;
+
             //When peakPlayerPosition is not less than Player's Y Value it will set a new peakPlayerPosition. The player will go reach a height, if the player falls below that height the condition will not be met. Therefore it will not add points. Only when the player reaches above the peakPlayerPosition will it add points.
-            if(peakPlayerPosition ! < Player.transform.position.y)
+            if (peakPlayerPosition ! < Player.transform.position.y)
             {
-            peakPlayerPosition = transform.position.y;  
+                peakPlayerPosition = transform.position.y;  
                 points += 1;
                 PointText.text = "Points: " + points.ToString();
             }
 
             //This will set & save a new highscore if the current highscore is less than points
             if(highscore < points)
-                {   
-                    //PlayerPrefs will save the value points into the value to "highScore"
-                    PlayerPrefs.SetInt("highScore", points);
-                }
+            {   
+                //PlayerPrefs will save the value points into the value to "highScore"
+                PlayerPrefs.SetInt("highScore", points);
+            }
 
         }
 
@@ -118,6 +132,14 @@ public class PlayerController : MonoBehaviour
         {
             PlayerPrefs.SetInt("highScore", 0);
         }
+    }
+    void Flip()
+    {
+        Vector3 currentScale = gameObject.transform.localScale;
+        currentScale.x *= -1;
+        gameObject.transform.localScale = currentScale;
+
+        facingRight = !facingRight;
     }
 
     private void UpdateJumpControls()
