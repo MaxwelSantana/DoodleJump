@@ -162,7 +162,7 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log(collision.gameObject.tag);
         if (delay > 0.5f)
-        {
+        {   
             if (collision.gameObject.tag == "Platform")
             {
                 Debug.Log("Jump");
