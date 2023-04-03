@@ -191,6 +191,6 @@ public class PlayerController : MonoBehaviour
 
     public void RestartGame()
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("MainScene");
     }
 }
