@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class PlayerController : MonoBehaviour
@@ -26,7 +27,7 @@ public class PlayerController : MonoBehaviour
 
     SpriteRenderer sr;
 
-    private float speed = 0.005f;
+    private float speed = 0.008f;
 
     private int characterState = 0; // 0: idle   1: run
 
@@ -48,7 +49,9 @@ public class PlayerController : MonoBehaviour
 
     public Text PointText;
 
+    public Text PointTextOver;
     public Text HighscoreText;
+    public Text HighscoreTextOver;
 
     public float peakPlayerPosition;
 
@@ -57,6 +60,7 @@ public class PlayerController : MonoBehaviour
     int highscore;
 
     bool facingRight = true;
+    public GameObject gameOver;
 
     void Start()
     {
@@ -79,7 +83,7 @@ public class PlayerController : MonoBehaviour
         playerCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
         
         playerCamera.transform.position = new Vector3(this.transform.position.x,
-        this.transform.position.y, playerCamera.transform.position.z);
+        peakPlayerPosition, playerCamera.transform.position.z);
         
         float horizontalInput = Input.GetAxis("Horizontal");
 
@@ -122,6 +126,11 @@ public class PlayerController : MonoBehaviour
         if (isFalling)
         {
             sr.sprite = _jumpSprites[2];
+            
+            if (Player.transform.position.y < playerCamera.transform.position.y - 5)
+            {
+                GameOver();
+            }
         }
 
         delay += Time.deltaTime;
@@ -149,6 +158,7 @@ public class PlayerController : MonoBehaviour
             isJumping = false;
             isFalling = true;
         }
+        
     }
 
     private void Jump()
@@ -162,7 +172,7 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log(collision.gameObject.tag);
         if (delay > 0.5f)
-        {
+        {   
             if (collision.gameObject.tag == "Platform")
             {
                 Debug.Log("Jump");
@@ -171,5 +181,16 @@ public class PlayerController : MonoBehaviour
             delay = 0.0f;
         }
     }
+    
+    private void GameOver() 
+    {
+    gameOver.SetActive(true);
+    HighscoreTextOver.text = "Highscore: " + highscore.ToString();
+    PointTextOver.text = "Points: " + points.ToString();
+    }
 
+    public void RestartGame()
+    {
+        SceneManager.LoadScene("SampleScene");
+    }
 }
